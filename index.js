@@ -196,6 +196,7 @@ async function run () {
     // Save Pet in Database
     app.post('/pets', verifyToken, async (req, res) => {
       const pet = req.body
+
       const result = await petsCollections.insertOne(pet)
       res.send(result)
     })
@@ -208,8 +209,20 @@ async function run () {
     })
     // Get all pets from database
     app.get('/pets', async (req, res) => {
-      const pets = await petsCollections.find({}).toArray()
-      res.send(pets)
+      const limit = parseInt(req.query.limit) || 4
+      const page = parseInt(req.query.page) || 1
+      const skip = (page - 1) * limit
+      try {
+        const pets = await petsCollections
+          .find({})
+          .skip(skip)
+          .limit(limit)
+          .toArray()
+        res.send(pets)
+      } catch (error) {
+        console.log('error fetching pets========>', error)
+        res.status(500).send({ message: 'Internal Server Error' })
+      }
     })
     // Get Single Pet Form Database
     app.get('/pet/:id', verifyToken, async (req, res) => {
