@@ -18,8 +18,7 @@ const corsOptions = {
     'http://localhost:5173',
     'https://petpals-hub.vercel.app',
     'http://localhost:5174',
-    'https://api.imgbb.com',
-    'https://pet-pals-hub-client-akash-khans-projects-83768962.vercel.app'
+    'https://api.imgbb.com'
   ],
   credentials: true,
   optionSuccessStatus: 200
